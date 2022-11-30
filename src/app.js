@@ -1,12 +1,16 @@
 const express = require('express');
 
 // ...
+
+const CategoryController = require('./controllers/category.controller');
 const UserController = require('./controllers/user.controller');
 const auth = require('./middlewares/auth');
 
 const app = express();
 
 app.use(express.json());
+
+app.post('/categories', auth, CategoryController.createCategory);
 
 app.post('/login', UserController.login);
 
