@@ -5,6 +5,16 @@ const errorMap = require('../utils/errorMap');
 
 const error500message = 'Internal error';
 
+const getAllCategories = async (_req, res) => {
+  try {
+    const categories = await CategoryService.getAllCategories();
+
+    return res.status(200).json(categories);
+  } catch (err) {
+    return res.status(500).json({ message: error500message });
+  }
+};
+
 const createCategory = async (req, res) => {
   try {
     const { name } = req.body;
@@ -20,5 +30,6 @@ const createCategory = async (req, res) => {
 };
 
 module.exports = {
+  getAllCategories,
   createCategory,
 };

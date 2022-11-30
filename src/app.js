@@ -10,6 +10,8 @@ const app = express();
 
 app.use(express.json());
 
+app.get('/categories', auth, CategoryController.getAllCategories);
+
 app.post('/categories', auth, CategoryController.createCategory);
 
 app.post('/login', UserController.login);
