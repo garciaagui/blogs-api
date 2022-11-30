@@ -24,6 +24,23 @@ const login = async (req, res) => {
   }
 };
 
+const createUser = async (req, res) => {
+  try {
+    const { displayName, email, password, image } = req.body;
+
+    const { type, message } = await UserService.createUser(displayName, email, password, image);
+
+    if (type) return res.status(errorMap.mapError(type)).json({ message });
+
+    const token = generateToken(email, JWT_SECRET);
+
+    return res.status(201).json({ token });
+  } catch (err) {
+    return res.status(500).json({ message: error500message });
+  }
+};
+
 module.exports = {
   login,
+  createUser,
 };
