@@ -18,6 +18,20 @@ const getAllUsers = async (_req, res) => {
   }
 };
 
+const getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const { type, message } = await UserService.getById(id);
+
+    if (type) return res.status(errorMap.mapError(type)).json({ message });
+
+    return res.status(200).json(message);
+  } catch (err) {
+    res.status(500).json({ message: error500message });
+  }
+};
+
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -52,6 +66,7 @@ const createUser = async (req, res) => {
 
 module.exports = {
   getAllUsers,
+  getById,
   login,
   createUser,
 };
