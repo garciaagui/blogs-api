@@ -8,6 +8,16 @@ const generateToken = require('../utils/generateToken');
 
 const error500message = 'Internal error';
 
+const getAllUsers = async (_req, res) => {
+  try {
+    const users = await UserService.getAllUsers();
+
+    return res.status(200).json(users);
+  } catch (err) {
+    return res.status(500).json({ message: error500message });
+  }
+};
+
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -41,6 +51,7 @@ const createUser = async (req, res) => {
 };
 
 module.exports = {
+  getAllUsers,
   login,
   createUser,
 };

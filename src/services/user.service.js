@@ -2,6 +2,13 @@ const snakeize = require('snakeize');
 const { User } = require('../models');
 const validations = require('../validations/validateInputValues');
 
+const getAllUsers = async () => {
+  const users = await User.findAll({
+    attributes: ['id', ['display_name', 'displayName'], 'email', 'image'],
+  });
+  return users;
+};
+
 const getByEmail = (email) => User.findOne({ where: { email } });
 
 const checkUser = async (email, password) => {
@@ -29,6 +36,7 @@ const createUser = async (displayName, email, password, image) => {
 };
 
 module.exports = {
+  getAllUsers,
   getByEmail,
   checkUser,
   createUser,
