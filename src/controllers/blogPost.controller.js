@@ -5,6 +5,16 @@ const errorMap = require('../utils/errorMap');
 
 const error500message = 'Internal error';
 
+const getAllBlogPosts = async (_req, res) => {
+  try {
+    const posts = await BlogPostService.getAllBlogPosts();
+
+    return res.status(200).json(posts);
+  } catch (err) {
+    return res.status(500).json({ message: error500message });
+  }
+};
+
 const createBlogPost = async (req, res) => {
   try {
     const { title, content, categoryIds } = req.body;
@@ -23,5 +33,6 @@ const createBlogPost = async (req, res) => {
 };
 
 module.exports = {
+  getAllBlogPosts,
   createBlogPost,
 };

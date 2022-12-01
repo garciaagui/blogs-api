@@ -17,6 +17,8 @@ app.post('/categories', auth, CategoryController.createCategory);
 
 app.post('/login', UserController.login);
 
+app.get('/post', auth, BlogPostController.getAllBlogPosts);
+
 app.post('/post', auth, BlogPostController.createBlogPost);
 
 app.get('/user', auth, UserController.getAllUsers);

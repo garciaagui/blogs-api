@@ -6,8 +6,24 @@ const config = require('../config/config');
 const env = process.env.NODE_ENV || 'development';
 const sequelize = new Sequelize(config[env]);
 
-const { BlogPost, PostCategory } = require('../models');
+const { BlogPost, PostCategory, User, Category } = require('../models');
 const validations = require('../validations/validateInputValues');
+
+const getAllBlogPosts = async () => {
+  const posts = await BlogPost.findAll({
+    include: [{
+      model: User,
+      as: 'user',
+      attributes: ['id', ['display_name', 'displayName'], 'email', 'image'],
+    },
+    {
+      model: Category,
+      as: 'categories',
+      through: { attributes: [] },
+    }],
+  });
+  return posts;
+};
 
 const createBlogPost = async (title, content, userId, categoryIds) => {
   const t = await sequelize.transaction();
@@ -35,5 +51,6 @@ const createBlogPost = async (title, content, userId, categoryIds) => {
 };
 
 module.exports = {
+  getAllBlogPosts,
   createBlogPost,
 };
