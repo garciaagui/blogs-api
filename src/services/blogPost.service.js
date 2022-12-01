@@ -9,18 +9,20 @@ const sequelize = new Sequelize(config[env]);
 const { BlogPost, PostCategory, User, Category } = require('../models');
 const validations = require('../validations/validateInputValues');
 
+const includeContent = [{
+  model: User,
+  as: 'user',
+  attributes: ['id', ['display_name', 'displayName'], 'email', 'image'],
+},
+{
+  model: Category,
+  as: 'categories',
+  through: { attributes: [] },
+}];
+
 const getAllBlogPosts = async () => {
   const posts = await BlogPost.findAll({
-    include: [{
-      model: User,
-      as: 'user',
-      attributes: ['id', ['display_name', 'displayName'], 'email', 'image'],
-    },
-    {
-      model: Category,
-      as: 'categories',
-      through: { attributes: [] },
-    }],
+    include: includeContent,
   });
   return posts;
 };
@@ -32,21 +34,25 @@ const getById = async (id) => {
   const post = await BlogPost.findOne({
     where: { id },
     attributes: ['id', 'title', 'content', ['user_id', 'userId'], 'published', 'updated'],
-    include: [{
-      model: User,
-      as: 'user',
-      attributes: ['id', ['display_name', 'displayName'], 'email', 'image'],
-    },
-    {
-      model: Category,
-      as: 'categories',
-      through: { attributes: [] },
-    }],
+    include: includeContent,
   });
 
   if (!post) return { type: 'NOT_FOUND', message: 'Post does not exist' };
 
   return { type: null, message: post };
+};
+
+const getByName = async (searchTerm) => {
+  const posts = await BlogPost.findAll({
+    where: {
+      [Sequelize.Op.or]:
+        [{ content: { [Sequelize.Op.like]: searchTerm } },
+        { title: { [Sequelize.Op.like]: searchTerm } }],
+    },
+    attributes: ['id', 'title', 'content', ['user_id', 'userId'], 'published', 'updated'],
+    include: includeContent,
+  });
+  return { type: null, message: posts };
 };
 
 const createBlogPost = async (title, content, userId, categoryIds) => {
@@ -113,6 +119,7 @@ const deleteBlogPost = async (id, userId) => {
 module.exports = {
   getAllBlogPosts,
   getById,
+  getByName,
   createBlogPost,
   updateBlogPost,
   deleteBlogPost,

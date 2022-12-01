@@ -29,6 +29,26 @@ const getById = async (req, res) => {
   }
 };
 
+const getByName = async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    if (!q.length) {
+      const posts = await BlogPostService.getAllBlogPosts();
+
+      return res.status(200).json(posts);
+    }
+
+    const searchTerm = `%${q}%`;
+    const { message } = await BlogPostService.getByName(searchTerm);
+
+    return res.status(200).json(message);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: error500message });
+  }
+};
+
 const createBlogPost = async (req, res) => {
   try {
     const { title, content, categoryIds } = req.body;
@@ -80,6 +100,7 @@ const deleteBlogPost = async (req, res) => {
 module.exports = {
   getAllBlogPosts,
   getById,
+  getByName,
   createBlogPost,
   updateBlogPost,
   deleteBlogPost,

@@ -21,6 +21,8 @@ app.get('/post', auth, BlogPostController.getAllBlogPosts);
 
 app.post('/post', auth, BlogPostController.createBlogPost);
 
+app.get('/post/search', auth, BlogPostController.getByName);
+
 app.put('/post/:id', auth, BlogPostController.updateBlogPost);
 
 app.get('/post/:id', auth, BlogPostController.getById);
@@ -34,7 +36,6 @@ app.post('/user', UserController.createUser);
 app.delete('/user/me', auth, UserController.deleteUser);
 
 app.get('/user/:id', auth, UserController.getById);
-
 
 // ...
 
