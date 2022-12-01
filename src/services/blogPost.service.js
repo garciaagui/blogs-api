@@ -25,6 +25,29 @@ const getAllBlogPosts = async () => {
   return posts;
 };
 
+const getById = async (id) => {
+  const error = await validations.validateId(id);
+  if (error.type) return error;
+
+  const post = await BlogPost.findOne({
+    where: { id },
+    include: [{
+      model: User,
+      as: 'user',
+      attributes: ['id', ['display_name', 'displayName'], 'email', 'image'],
+    },
+    {
+      model: Category,
+      as: 'categories',
+      through: { attributes: [] },
+    }],
+  });
+
+  if (!post) return { type: 'NOT_FOUND', message: 'Post does not exist' };
+
+  return { type: null, message: post };
+};
+
 const createBlogPost = async (title, content, userId, categoryIds) => {
   const t = await sequelize.transaction();
   try {
@@ -52,5 +75,6 @@ const createBlogPost = async (title, content, userId, categoryIds) => {
 
 module.exports = {
   getAllBlogPosts,
+  getById,
   createBlogPost,
 };

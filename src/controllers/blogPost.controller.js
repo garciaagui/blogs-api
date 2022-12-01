@@ -15,6 +15,20 @@ const getAllBlogPosts = async (_req, res) => {
   }
 };
 
+const getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const { type, message } = await BlogPostService.getById(id);
+
+    if (type) return res.status(errorMap.mapError(type)).json({ message });
+
+    return res.status(200).json(message);
+  } catch (err) {
+    res.status(500).json({ message: error500message });
+  }
+};
+
 const createBlogPost = async (req, res) => {
   try {
     const { title, content, categoryIds } = req.body;
@@ -34,5 +48,6 @@ const createBlogPost = async (req, res) => {
 
 module.exports = {
   getAllBlogPosts,
+  getById,
   createBlogPost,
 };
