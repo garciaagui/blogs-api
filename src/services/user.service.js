@@ -47,7 +47,7 @@ const createUser = async (displayName, email, password, image) => {
   const doesUserExist = await getByEmail(email);
   if (doesUserExist) return { type: 'CONFLICT', message: 'User already registered' };
 
-  const newUser = User.create(snakeize({ displayName, email, password, image }));
+  const newUser = await User.create(snakeize({ displayName, email, password, image }));
   return { type: null, message: newUser };
 };
 

@@ -2,6 +2,7 @@ const express = require('express');
 
 // ...
 
+const BlogPostController = require('./controllers/blogPost.controller');
 const CategoryController = require('./controllers/category.controller');
 const UserController = require('./controllers/user.controller');
 const auth = require('./middlewares/auth');
@@ -15,6 +16,8 @@ app.get('/categories', auth, CategoryController.getAllCategories);
 app.post('/categories', auth, CategoryController.createCategory);
 
 app.post('/login', UserController.login);
+
+app.post('/post', auth, BlogPostController.createBlogPost);
 
 app.get('/user', auth, UserController.getAllUsers);
 

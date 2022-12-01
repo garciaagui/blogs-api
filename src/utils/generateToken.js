@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 
-module.exports = (email, secret) => {
+module.exports = (userId, secret) => {
   const jwtConfig = { expiresIn: '1h', algorithm: 'HS256' };
 
-  const payload = { email };
+  const payload = { userId };
 
   const token = jwt.sign(payload, secret, jwtConfig);
 

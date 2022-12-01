@@ -1,4 +1,5 @@
 const schemas = require('./schemas');
+const CategoryService = require('../services/category.service');
 
 const validateId = (id) => {
   const { error } = schemas.idSchema.validate(id);
@@ -28,9 +29,26 @@ const validateNewCategory = async (name) => {
   return { type: null, message: '' };
 };
 
+const validateNewBlogPost = async (title, content, categoryIds) => {
+  const { error } = schemas.blogPostSchema.validate({ title, content, categoryIds });
+  if (error) return { type: 'INVALID_VALUE', message: error.message };
+
+  const categories = await Promise.all(
+    categoryIds.map(async (id) => CategoryService.getById(id)),
+  );
+
+  const someCategoryIsMissing = categories.some((category) => category === null);
+  if (someCategoryIsMissing) {
+    return { type: 'INVALID_VALUE', message: 'one or more "categoryIds" not found' };
+  }
+
+  return { type: null, message: '' };
+};
+
 module.exports = {
   validateId,
   validateLogin,
   validateNewUser,
   validateNewCategory,
+  validateNewBlogPost,
 };

@@ -40,7 +40,7 @@ const login = async (req, res) => {
 
     if (type) return res.status(errorMap.mapError(type)).json({ message });
 
-    const token = generateToken(email, JWT_SECRET);
+    const token = generateToken(message.id, JWT_SECRET);
 
     return res.status(200).json({ token });
   } catch (err) {
@@ -56,7 +56,7 @@ const createUser = async (req, res) => {
 
     if (type) return res.status(errorMap.mapError(type)).json({ message });
 
-    const token = generateToken(email, JWT_SECRET);
+    const token = generateToken(message.id, JWT_SECRET);
 
     return res.status(201).json({ token });
   } catch (err) {
