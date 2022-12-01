@@ -46,8 +46,26 @@ const createBlogPost = async (req, res) => {
   }
 };
 
+const updateBlogPost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const { userId } = req.user;
+
+    const { type, message } = await BlogPostService
+      .updateBlogPost(id, title, content, userId);
+
+    if (type) return res.status(errorMap.mapError(type)).json({ message });
+
+    return res.status(200).json(message);
+  } catch (err) {
+    return res.status(500).json({ message: error500message });
+  }
+};
+
 module.exports = {
   getAllBlogPosts,
   getById,
   createBlogPost,
+  updateBlogPost,
 };

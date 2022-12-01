@@ -47,10 +47,18 @@ const validateNewBlogPost = async (title, content, categoryIds) => {
   return { type: null, message: '' };
 };
 
+const validateBlogPostUpdate = async (title, content) => {
+  const { error } = schemas.updateBlogPostSchema.validate({ title, content });
+  if (error) return { type: 'INVALID_VALUE', message: error.message };
+
+  return { type: null, message: '' };
+};
+
 module.exports = {
   validateId,
   validateLogin,
   validateNewUser,
   validateNewCategory,
   validateNewBlogPost,
+  validateBlogPostUpdate,
 };

@@ -61,10 +61,28 @@ const blogPostSchema = Joi.object({
     }),
 });
 
+const updateBlogPostSchema = Joi.object({
+  title: Joi.string()
+    .min(1)
+    .required()
+    .messages({
+      'any.required': requiredFieldsMessage,
+      'string.empty': requiredFieldsMessage,
+    }),
+  content: Joi.string()
+    .min(1)
+    .required()
+    .messages({
+      'any.required': requiredFieldsMessage,
+      'string.empty': requiredFieldsMessage,
+    }),
+});
+
 module.exports = {
   idSchema,
   loginSchema,
   userSchema,
   categorySchema,
   blogPostSchema,
+  updateBlogPostSchema,
 };

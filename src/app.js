@@ -21,6 +21,8 @@ app.get('/post', auth, BlogPostController.getAllBlogPosts);
 
 app.post('/post', auth, BlogPostController.createBlogPost);
 
+app.put('/post/:id', auth, BlogPostController.updateBlogPost);
+
 app.get('/post/:id', auth, BlogPostController.getById);
 
 app.get('/user', auth, UserController.getAllUsers);

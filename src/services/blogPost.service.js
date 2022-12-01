@@ -31,6 +31,7 @@ const getById = async (id) => {
 
   const post = await BlogPost.findOne({
     where: { id },
+    attributes: ['id', 'title', 'content', ['user_id', 'userId'], 'published', 'updated'],
     include: [{
       model: User,
       as: 'user',
@@ -73,8 +74,31 @@ const createBlogPost = async (title, content, userId, categoryIds) => {
   }
 };
 
+const updateBlogPost = async (id, title, content, userId) => {
+  const error = await validations.validateBlogPostUpdate(title, content);
+  if (error.type) return error;
+
+  const blogPost = await getById(id);
+
+  if (!blogPost || blogPost.message.dataValues.userId !== userId) {
+    return { type: 'UNAUTHORIZED', message: 'Unauthorized user' };
+  }
+
+  const updatedDate = new Date().toJSON();
+
+  await BlogPost.update(
+    snakeize({ title, content, updated: updatedDate }),
+    { where: { id } },
+  );
+
+  const updatedBlogPost = await getById(id);
+
+  return { type: null, message: updatedBlogPost.message };
+};
+
 module.exports = {
   getAllBlogPosts,
   getById,
   createBlogPost,
+  updateBlogPost,
 };
