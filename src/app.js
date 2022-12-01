@@ -25,6 +25,8 @@ app.put('/post/:id', auth, BlogPostController.updateBlogPost);
 
 app.get('/post/:id', auth, BlogPostController.getById);
 
+app.delete('/post/:id', auth, BlogPostController.deleteBlogPost);
+
 app.get('/user', auth, UserController.getAllUsers);
 
 app.post('/user', UserController.createUser);

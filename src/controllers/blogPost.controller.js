@@ -38,8 +38,6 @@ const createBlogPost = async (req, res) => {
       .createBlogPost(title, content, userId, categoryIds);
     if (type) return res.status(errorMap.mapError(type)).json({ message });
 
-    // const { id, user_id, published, updated } = message;
-
     return res.status(201).json(message.dataValues);
   } catch (err) {
     return res.status(500).json({ message: error500message });
@@ -63,9 +61,26 @@ const updateBlogPost = async (req, res) => {
   }
 };
 
+const deleteBlogPost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.user;
+
+    const { type, message } = await BlogPostService
+      .deleteBlogPost(id, userId);
+
+    if (type) return res.status(errorMap.mapError(type)).json({ message });
+
+    return res.status(204).json(message);
+  } catch (err) {
+    return res.status(500).json({ message: error500message });
+  }
+};
+
 module.exports = {
   getAllBlogPosts,
   getById,
   createBlogPost,
   updateBlogPost,
+  deleteBlogPost,
 };
