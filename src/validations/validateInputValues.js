@@ -1,5 +1,5 @@
 const schemas = require('./schemas');
-const CategoryService = require('../services/category.service');
+const { Category } = require('../models');
 
 const validateId = (id) => {
   const { error } = schemas.idSchema.validate(id);
@@ -34,8 +34,7 @@ const validateNewBlogPost = async (title, content, categoryIds) => {
   if (error) return { type: 'INVALID_VALUE', message: error.message };
 
   const categories = await Promise.all(
-    categoryIds.map(async (id) => CategoryService.getById(id)),
-  );
+    categoryIds.map(async (id) => Category.findOne({ where: { id } })));
 
   const someCategoryIsMissing = categories.some((category) => category === null);
   if (someCategoryIsMissing) {

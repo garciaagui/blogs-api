@@ -6,14 +6,6 @@ const getAllCategories = async () => {
   return categories;
 };
 
-const getById = async (id) => {
-  const category = await Category.findOne({
-    where: { id },
-  });
-
-  return category;
-};
-
 const getByName = (name) => Category.findOne({ where: { name } });
 
 const createCategory = async (name) => {
@@ -29,7 +21,6 @@ const createCategory = async (name) => {
 
 module.exports = {
   getAllCategories,
-  getById,
   getByName,
   createCategory,
 };
