@@ -51,10 +51,17 @@ const createUser = async (displayName, email, password, image) => {
   return { type: null, message: newUser };
 };
 
+const deleteUser = async (id) => {
+  const deletedUser = await User.destroy({ where: { id } });
+
+  return { type: null, message: deletedUser };
+};
+
 module.exports = {
   getAllUsers,
   getById,
   getByEmail,
   checkUser,
   createUser,
+  deleteUser,
 };

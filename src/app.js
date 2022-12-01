@@ -31,7 +31,10 @@ app.get('/user', auth, UserController.getAllUsers);
 
 app.post('/user', UserController.createUser);
 
+app.delete('/user/me', auth, UserController.deleteUser);
+
 app.get('/user/:id', auth, UserController.getById);
+
 
 // ...
 
