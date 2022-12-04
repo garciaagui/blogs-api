@@ -9,6 +9,7 @@ const sequelize = new Sequelize(config[env]);
 const { BlogPost, PostCategory, User, Category } = require('../models');
 const validations = require('../validations/validateInputValues');
 
+const postAttributes = ['id', 'title', 'content', ['user_id', 'userId'], 'published', 'updated'];
 const includeContent = [{
   model: User,
   as: 'user',
@@ -20,20 +21,21 @@ const includeContent = [{
   through: { attributes: [] },
 }];
 
-const getAllBlogPosts = async () => {
+const getAllPosts = async () => {
   const posts = await BlogPost.findAll({
     include: includeContent,
   });
-  return posts;
+
+  return { type: null, message: posts };
 };
 
-const getById = async (id) => {
+const getPostById = async (id) => {
   const error = await validations.validateId(id);
   if (error.type) return error;
 
   const post = await BlogPost.findOne({
     where: { id },
-    attributes: ['id', 'title', 'content', ['user_id', 'userId'], 'published', 'updated'],
+    attributes: postAttributes,
     include: includeContent,
   });
 
@@ -42,20 +44,21 @@ const getById = async (id) => {
   return { type: null, message: post };
 };
 
-const getByName = async (searchTerm) => {
+const getPostsByName = async (searchTerm) => {
   const posts = await BlogPost.findAll({
     where: {
       [Sequelize.Op.or]:
         [{ content: { [Sequelize.Op.like]: searchTerm } },
         { title: { [Sequelize.Op.like]: searchTerm } }],
     },
-    attributes: ['id', 'title', 'content', ['user_id', 'userId'], 'published', 'updated'],
+    attributes: postAttributes,
     include: includeContent,
   });
+
   return { type: null, message: posts };
 };
 
-const createBlogPost = async (title, content, userId, categoryIds) => {
+const createPost = async (title, content, userId, categoryIds) => {
   const t = await sequelize.transaction();
   try {
     const error = await validations.validateNewBlogPost(title, content, categoryIds);
@@ -63,31 +66,34 @@ const createBlogPost = async (title, content, userId, categoryIds) => {
 
     const date = new Date().toJSON();
 
-    const newBlogPost = await BlogPost
+    const newPost = await BlogPost
       .create(snakeize({ title, content, userId, published: date, updated: date }));
 
     categoryIds.map(async (id) => {
-      await PostCategory.create(snakeize({ postId: newBlogPost.id, categoryId: id }));
+      await PostCategory.create(snakeize({ postId: newPost.id, categoryId: id }));
     });
 
     await t.commit();
 
-    return { type: null, message: camelize(newBlogPost) };
+    return { type: null, message: camelize(newPost) };
   } catch (e) {
     await t.rollback();
-    console.log(e);
     throw e;
   }
 };
 
-const updateBlogPost = async (id, title, content, userId) => {
+const updatePost = async (id, title, content, userId) => {
   const error = await validations.validateBlogPostUpdate(title, content);
   if (error.type) return error;
 
-  const blogPost = await getById(id);
+  const { type, message } = await getPostById(id);
 
-  if (!blogPost || blogPost.message.dataValues.userId !== userId) {
+  if (!type && message.dataValues.userId !== userId) {
     return { type: 'UNAUTHORIZED', message: 'Unauthorized user' };
+  }
+
+  if (type) {
+    return { type, message };
   }
 
   const updatedDate = new Date().toJSON();
@@ -97,18 +103,20 @@ const updateBlogPost = async (id, title, content, userId) => {
     { where: { id } },
   );
 
-  const updatedBlogPost = await getById(id);
+  const updatedBlogPost = await getPostById(id);
 
   return { type: null, message: updatedBlogPost.message };
 };
 
-const deleteBlogPost = async (id, userId) => {
-  const { type, message } = await getById(id);
+const deletePost = async (id, userId) => {
+  const { type, message } = await getPostById(id);
 
-  if (type) return { type: 'NOT_FOUND', message: 'Post does not exist' };
-
-  if (message.dataValues.userId !== userId) {
+  if (!type && message.dataValues.userId !== userId) {
     return { type: 'UNAUTHORIZED', message: 'Unauthorized user' };
+  }
+
+  if (type) {
+    return { type, message };
   }
 
   const deletedPost = await BlogPost.destroy({ where: { id } });
@@ -117,10 +125,10 @@ const deleteBlogPost = async (id, userId) => {
 };
 
 module.exports = {
-  getAllBlogPosts,
-  getById,
-  getByName,
-  createBlogPost,
-  updateBlogPost,
-  deleteBlogPost,
+  getAllPosts,
+  getPostById,
+  getPostsByName,
+  createPost,
+  updatePost,
+  deletePost,
 };

@@ -17,17 +17,17 @@ app.post('/categories', auth, CategoryController.createCategory);
 
 app.post('/login', UserController.loginUser);
 
-app.get('/post', auth, BlogPostController.getAllBlogPosts);
+app.get('/post', auth, BlogPostController.getAllPosts);
 
-app.post('/post', auth, BlogPostController.createBlogPost);
+app.post('/post', auth, BlogPostController.createPost);
 
-app.get('/post/search', auth, BlogPostController.getByName);
+app.get('/post/search', auth, BlogPostController.getPostsByName);
 
-app.put('/post/:id', auth, BlogPostController.updateBlogPost);
+app.put('/post/:id', auth, BlogPostController.updatePost);
 
-app.get('/post/:id', auth, BlogPostController.getById);
+app.get('/post/:id', auth, BlogPostController.getPostById);
 
-app.delete('/post/:id', auth, BlogPostController.deleteBlogPost);
+app.delete('/post/:id', auth, BlogPostController.deletePost);
 
 app.get('/user', auth, UserController.getAllUsers);
 

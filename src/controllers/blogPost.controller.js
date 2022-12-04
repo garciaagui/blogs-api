@@ -5,21 +5,21 @@ const errorMap = require('../utils/errorMap');
 
 const error500message = 'Internal error';
 
-const getAllBlogPosts = async (_req, res) => {
+const getAllPosts = async (_req, res) => {
   try {
-    const posts = await BlogPostService.getAllBlogPosts();
+    const { message } = await BlogPostService.getAllPosts();
 
-    return res.status(200).json(posts);
+    return res.status(200).json(message);
   } catch (err) {
     return res.status(500).json({ message: error500message });
   }
 };
 
-const getById = async (req, res) => {
+const getPostById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const { type, message } = await BlogPostService.getById(id);
+    const { type, message } = await BlogPostService.getPostById(id);
 
     if (type) return res.status(errorMap.mapError(type)).json({ message });
 
@@ -29,18 +29,18 @@ const getById = async (req, res) => {
   }
 };
 
-const getByName = async (req, res) => {
+const getPostsByName = async (req, res) => {
   try {
     const { q } = req.query;
 
     if (!q.length) {
-      const posts = await BlogPostService.getAllBlogPosts();
+      const { message } = await BlogPostService.getAllPosts();
 
-      return res.status(200).json(posts);
+      return res.status(200).json(message);
     }
 
     const searchTerm = `%${q}%`;
-    const { message } = await BlogPostService.getByName(searchTerm);
+    const { message } = await BlogPostService.getPostsByName(searchTerm);
 
     return res.status(200).json(message);
   } catch (e) {
@@ -49,13 +49,13 @@ const getByName = async (req, res) => {
   }
 };
 
-const createBlogPost = async (req, res) => {
+const createPost = async (req, res) => {
   try {
     const { title, content, categoryIds } = req.body;
     const { userId } = req.user;
 
     const { type, message } = await BlogPostService
-      .createBlogPost(title, content, userId, categoryIds);
+      .createPost(title, content, userId, categoryIds);
     if (type) return res.status(errorMap.mapError(type)).json({ message });
 
     return res.status(201).json(message.dataValues);
@@ -64,14 +64,14 @@ const createBlogPost = async (req, res) => {
   }
 };
 
-const updateBlogPost = async (req, res) => {
+const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
     const { title, content } = req.body;
     const { userId } = req.user;
 
     const { type, message } = await BlogPostService
-      .updateBlogPost(id, title, content, userId);
+      .updatePost(id, title, content, userId);
 
     if (type) return res.status(errorMap.mapError(type)).json({ message });
 
@@ -81,13 +81,13 @@ const updateBlogPost = async (req, res) => {
   }
 };
 
-const deleteBlogPost = async (req, res) => {
+const deletePost = async (req, res) => {
   try {
     const { id } = req.params;
     const { userId } = req.user;
 
     const { type, message } = await BlogPostService
-      .deleteBlogPost(id, userId);
+      .deletePost(id, userId);
 
     if (type) return res.status(errorMap.mapError(type)).json({ message });
 
@@ -98,10 +98,10 @@ const deleteBlogPost = async (req, res) => {
 };
 
 module.exports = {
-  getAllBlogPosts,
-  getById,
-  getByName,
-  createBlogPost,
-  updateBlogPost,
-  deleteBlogPost,
+  getAllPosts,
+  getPostById,
+  getPostsByName,
+  createPost,
+  updatePost,
+  deletePost,
 };
