@@ -7,9 +7,9 @@ const error500message = 'Internal error';
 
 const getAllCategories = async (_req, res) => {
   try {
-    const categories = await CategoryService.getAllCategories();
+    const { message } = await CategoryService.getAllCategories();
 
-    return res.status(200).json(categories);
+    return res.status(200).json(message);
   } catch (err) {
     return res.status(500).json({ message: error500message });
   }

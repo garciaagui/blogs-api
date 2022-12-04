@@ -3,16 +3,17 @@ const validations = require('../validations/validateInputValues');
 
 const getAllCategories = async () => {
   const categories = await Category.findAll();
-  return categories;
+
+  return { type: null, message: categories };
 };
 
-const getByName = (name) => Category.findOne({ where: { name } });
+const getCategoryByName = (name) => Category.findOne({ where: { name } });
 
 const createCategory = async (name) => {
   const error = await validations.validateNewCategory(name);
   if (error.type) return error;
 
-  const doesCategoryExist = await getByName(name);
+  const doesCategoryExist = await getCategoryByName(name);
   if (doesCategoryExist) return { type: 'CONFLICT', message: 'Category already registered' };
 
   const newCategory = await Category.create({ name });
@@ -21,6 +22,6 @@ const createCategory = async (name) => {
 
 module.exports = {
   getAllCategories,
-  getByName,
+  getCategoryByName,
   createCategory,
 };
