@@ -15,7 +15,7 @@ app.get('/categories', auth, CategoryController.getAllCategories);
 
 app.post('/categories', auth, CategoryController.createCategory);
 
-app.post('/login', UserController.login);
+app.post('/login', UserController.loginUser);
 
 app.get('/post', auth, BlogPostController.getAllBlogPosts);
 
@@ -35,7 +35,7 @@ app.post('/user', UserController.createUser);
 
 app.delete('/user/me', auth, UserController.deleteUser);
 
-app.get('/user/:id', auth, UserController.getById);
+app.get('/user/:id', auth, UserController.getUserById);
 
 // ...
 

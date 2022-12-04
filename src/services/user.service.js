@@ -2,19 +2,21 @@ const snakeize = require('snakeize');
 const { User } = require('../models');
 const validations = require('../validations/validateInputValues');
 
+const userAttributes = ['id', ['display_name', 'displayName'], 'email', 'image'];
+
 const getAllUsers = async () => {
   const users = await User.findAll({
-    attributes: ['id', ['display_name', 'displayName'], 'email', 'image'],
+    attributes: userAttributes,
   });
-  return users;
+  return { type: null, message: users };
 };
 
-const getById = async (id) => {
+const getUserById = async (id) => {
   const error = await validations.validateId(id);
   if (error.type) return error;
 
   const user = await User.findOne({
-    attributes: ['id', ['display_name', 'displayName'], 'email', 'image'],
+    attributes: userAttributes,
     where: { id },
   });
 
@@ -25,13 +27,13 @@ const getById = async (id) => {
   return { type: null, message: user };
 };
 
-const getByEmail = (email) => User.findOne({ where: { email } });
+const getUserByEmail = (email) => User.findOne({ where: { email } });
 
 const checkUser = async (email, password) => {
   const error = await validations.validateLogin(email, password);
   if (error.type) return error;
 
-  const user = await getByEmail(email);
+  const user = await getUserByEmail(email);
 
   if (!user || user.password !== password) {
     return { type: 'UNMATCHED_FIELDS', message: 'Invalid fields' };
@@ -44,7 +46,7 @@ const createUser = async (displayName, email, password, image) => {
   const error = await validations.validateNewUser(displayName, email, password);
   if (error.type) return error;
 
-  const doesUserExist = await getByEmail(email);
+  const doesUserExist = await getUserByEmail(email);
   if (doesUserExist) return { type: 'CONFLICT', message: 'User already registered' };
 
   const newUser = await User.create(snakeize({ displayName, email, password, image }));
@@ -59,8 +61,8 @@ const deleteUser = async (id) => {
 
 module.exports = {
   getAllUsers,
-  getById,
-  getByEmail,
+  getUserById,
+  getUserByEmail,
   checkUser,
   createUser,
   deleteUser,

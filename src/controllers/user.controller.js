@@ -10,19 +10,19 @@ const error500message = 'Internal error';
 
 const getAllUsers = async (_req, res) => {
   try {
-    const users = await UserService.getAllUsers();
+    const { message } = await UserService.getAllUsers();
 
-    return res.status(200).json(users);
+    return res.status(200).json(message);
   } catch (err) {
     return res.status(500).json({ message: error500message });
   }
 };
 
-const getById = async (req, res) => {
+const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const { type, message } = await UserService.getById(id);
+    const { type, message } = await UserService.getUserById(id);
 
     if (type) return res.status(errorMap.mapError(type)).json({ message });
 
@@ -32,7 +32,7 @@ const getById = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
+const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -80,8 +80,8 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   getAllUsers,
-  getById,
-  login,
+  getUserById,
+  loginUser,
   createUser,
   deleteUser,
 };
