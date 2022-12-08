@@ -63,16 +63,15 @@ const createPost = async (title, content, userId, categoryIds) => {
   if (error.type) return error;
 
   const result = await sequelize.transaction(async (t) => {
-
     const date = new Date().toJSON();
 
     const newPost = await BlogPost
-      .create(snakeize({ title, content, userId, published: date, updated: date })
-        , { transaction: t });
+      .create(snakeize({ title, content, userId, published: date, updated: date }),
+        { transaction: t });
 
     const inserts = categoryIds.map(async (id) => {
-      await PostCategory.create(snakeize({ postId: newPost.id, categoryId: id })
-        , { transaction: t });
+      await PostCategory.create(snakeize({ postId: newPost.id, categoryId: id }),
+        { transaction: t });
     });
 
     await Promise.all(inserts);
