@@ -59,27 +59,28 @@ const getPostsByName = async (searchTerm) => {
 };
 
 const createPost = async (title, content, userId, categoryIds) => {
-  const t = await sequelize.transaction();
-  try {
-    const error = await validations.validateNewBlogPost(title, content, categoryIds);
-    if (error.type) return error;
+  const error = await validations.validateNewBlogPost(title, content, categoryIds);
+  if (error.type) return error;
+
+  const result = await sequelize.transaction(async (t) => {
 
     const date = new Date().toJSON();
 
     const newPost = await BlogPost
-      .create(snakeize({ title, content, userId, published: date, updated: date }));
+      .create(snakeize({ title, content, userId, published: date, updated: date })
+        , { transaction: t });
 
-    categoryIds.map(async (id) => {
-      await PostCategory.create(snakeize({ postId: newPost.id, categoryId: id }));
+    const inserts = categoryIds.map(async (id) => {
+      await PostCategory.create(snakeize({ postId: newPost.id, categoryId: id })
+        , { transaction: t });
     });
 
-    await t.commit();
+    await Promise.all(inserts);
 
     return { type: null, message: camelize(newPost) };
-  } catch (e) {
-    await t.rollback();
-    throw e;
-  }
+  });
+
+  return result;
 };
 
 const updatePost = async (id, title, content, userId) => {
