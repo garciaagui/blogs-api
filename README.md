@@ -134,6 +134,7 @@ npm install
 ```
 npm run prestart
 ```
+> ℹ️ Arquivos de `seeders` criados e disponibilizados pela Trybe.
 
 5. Para iniciar o servidor, utilize um dos comandos abaixo.
 
@@ -177,6 +178,8 @@ npm install
 ```
 npm run prestart
 ```
+
+> ℹ️ Arquivos de `seeders` criados e disponibilizados pela Trybe.
 
 6. Para iniciar o servidor, utilize um dos comandos abaixo.
 
