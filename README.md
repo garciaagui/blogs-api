@@ -20,7 +20,48 @@
 
 Projeto **22** do curso de Desenvolvimento Web da [Trybe][trybe-site-url].
 
-<!-- DESCRIÇÃO DO PROJETO -->
+Aplicação consiste em uma API e um banco de dados projetados especificamente para o gerenciamento de conteúdo em blogs. Desenvolvida em Node.js, ela utiliza o Sequelize para modelar os dados de maneira eficiente. Segue a arquitetura MSC (Model-Service-Controller) e os princípios do padrão REST.
+
+Para garantir a segurança das informações, todas as operações CRUD (criação, leitura, atualização e remoção) são precedidas pela autenticação do token JWT. Isso significa que o usuário precisa fornecer as credenciais corretas para executar uma operação, mantendo assim a integridade dos dados.
+
+<details>
+  <summary><strong>🎲 Diagrama ER e Entidades</strong></summary>
+
+#### Diagrama de Entidade-Relacionamento
+
+![DER](./public/der.png)
+
+---
+
+#### Formato das entidades
+
+Os dados abaixo são fictícios e utilizados apenas para exemplificar a estrutura das tabelas do banco de dados.
+
+- Uma tabela chamada **users**, com a seguinte estrutura:
+
+  | id  | display_name    | email                                | password | image                                                                                                      |
+  | --- | --------------- | ------------------------------------ | -------- | ---------------------------------------------------------------------------------------------------------- |
+  | 1   | Brett Wiltshire | brett@email.com // Tem que ser único | 123456   | http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png // Não obrigatório |
+
+- Uma tabela chamada **categories**, com a seguinte estrutura:
+
+  | id  | name |
+  | --- | ---- |
+  | 18  | News |
+
+- Uma tabela chamada **blog_posts**, com a seguinte estrutura:
+
+  | id  | title                      | content                                                | user_id                                                | published                | updated                  |
+  | --- | -------------------------- | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------ | ------------------------ |
+  | 21  | Latest updates, August 1st | The whole text for the blog post goes here in this key | 14 // Chave estrangeira, referenciando o id de `users` | 2011-08-01T19:58:00.000Z | 2011-08-01T19:58:51.947Z |
+
+- Uma tabela chamada **posts_categories**. Contém uma **chave primária composta** utilizando os dois atributos da estrutura:
+
+  | post_id                                                               | category_id                                                            |
+  | --------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+  | 50 // Chave primária e estrangeira, referenciando o id de `BlogPosts` | 20 // Chave primária e estrangeira, referenciando o id de `Categories` |
+
+  </details>
 
 <br/>
 
@@ -71,7 +112,7 @@ git@github.com:garciaagui/trybe-project-22_blogs-api.git
 cd trybe-project-22_blogs-api/
 ```
 
-- 🔘 Agora, decida se o projeto será rodado localmente ou via Docker.
+> 🔘 Agora, decida se o projeto será rodado localmente ou via Docker.
 
 <details>
   <summary><strong>💽 Localmente</strong></summary>
@@ -82,6 +123,27 @@ cd trybe-project-22_blogs-api/
 
 ```
 npm install
+```
+
+3. Configure as variáveis de ambiente:
+
+- Renomeie o arquivo `.env.example` (disponível na raíz do projeto) para `.env`;
+- Configure as variáveis `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD` para o seu contexto local.
+
+4. Crie e popule o banco de dados com o comando abaixo.
+
+```
+npm run prestart
+```
+
+5. Para iniciar o servidor, utilize um dos comandos abaixo.
+
+```
+// Comando 1 - Precisa rodá-lo novamente em caso de alteração no código
+npm run start
+
+// Comando 2 - Reinicia o servidor automaticamente caso haja alguma alteração no código
+npm run nodemon
 ```
 
 </details>
@@ -103,11 +165,34 @@ docker-compose up -d --build
 docker exec -it blogs_api bash
 ```
 
-4. Dentro do container `blogs_api`, instale as dependências do projeto.
+> ⚠️ A partir de agora, **TODOS** os comandos (scripts) disponíveis no `package.json` (incluindo o npm install) devem ser executados **DENTRO** do container `blogs_api`.
+
+4. Instale as dependências do projeto.
 
 ```
 npm install
 ```
+
+5. Crie e popule o banco de dados com o comando abaixo.
+
+```
+npm run prestart
+```
+
+6. Para iniciar o servidor, utilize um dos comandos abaixo.
+
+```
+// Comando 1 - Precisa rodá-lo novamente em caso de alteração no código
+npm start
+
+// Comando 2 - Reinicia o servidor automaticamente caso haja alguma alteração no código
+npm run nodemon
+```
+
+- Para o contexto de teste local, siga os passos abaixo.
+
+1. Renomeie o arquivo `.env.example` (disponível na raíz do projeto) para `.env`;
+2. Configure as variáveis `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD` para o seu contexto local.
 
 </details>
 
@@ -261,14 +346,14 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto. 
 
 ## Habilidades
 
-<!-- <ul>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-</ul> -->
+<ul>
+  <li>Aplicação da arquitetura de software MSC (Model-Service-Controller).</li>
+  <li>Modelagem de dados com o ORM Sequelize.</li>
+  <li>Aplicação dos princípios de arquitetura REST.</li>
+  <li>Criação de CRUD.</li>
+  <li>Utilização do jsonwebtoken (JWT) para geração de token e autenticação de usuários.</li>
+  <li>Utilização do JOI para validação.</li>
+</ul>
 
 <br/>
 
