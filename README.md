@@ -25,11 +25,13 @@ Aplicação consiste em uma API e um banco de dados projetados especificamente p
 Para garantir a segurança das informações, todas as operações CRUD (criação, leitura, atualização e remoção) são precedidas pela autenticação do token JWT. Isso significa que o usuário precisa fornecer as credenciais corretas para executar uma operação, mantendo assim a integridade dos dados.
 
 <details>
-  <summary><strong>🎲 Diagrama ER e Entidades</strong></summary>
+  <summary><strong>🎲 Aqui você pode se aprofundar na estrutura da base de dados.</strong></summary>
 
 #### Diagrama de Entidade-Relacionamento
 
 ![DER](./public/der.png)
+
+> ℹ️ Imagem criada e disponibilizada pela Trybe.
 
 ---
 
@@ -83,16 +85,13 @@ Os dados abaixo são fictícios e utilizados apenas para exemplificar a estrutur
 
 ## Funcionalidades
 
-<!-- <ul>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-</ul> -->
+<ul>
+  <li>Login de usuários.</li>
+  <li>Geração e autenticação de token JWT.</li>
+  <li>Criar, listar e deletar usuários.</li>
+  <li>Criar e listar categorias.</li>
+  <li>Criar, listar, atualizar e deletar posts.</li>
+</ul>
 
 <br/>
 
