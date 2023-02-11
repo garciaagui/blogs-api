@@ -57,7 +57,7 @@ Projeto **22** do curso de Desenvolvimento Web da [Trybe][trybe-site-url].
 
 ## Como Executar o Projeto
 
-Para rodar o projeto localmente, siga os passos abaixo.
+Para rodar o projeto, siga os passos abaixo.
 
 1. Clone o repositório;
 
@@ -71,25 +71,62 @@ git@github.com:garciaagui/trybe-project-22_blogs-api.git
 cd trybe-project-22_blogs-api/
 ```
 
-3. Na raiz do projeto, instale as dependências com o comando abaixo;
+- 🔘 Agora, decida se o projeto será rodado localmente ou via Docker.
+
+<details>
+  <summary><strong>💽 Localmente</strong></summary>
+
+1. Certifique-se que você tenha o **node** instalado na versão 16 ou superior. Confira [aqui](https://nodejs.org/pt-br/download/package-manager/) a documentação oficial.
+
+2. Na raiz do projeto, instale as dependências do projeto.
 
 ```
 npm install
 ```
 
+</details>
+
+<details>
+  <summary><strong>🐋 Docker</strong></summary>
+  
+1. Certifique-se que você tenha o **docker-compose** instalado na versão 1.29 ou superior. Links oportunos caso você precise instalar ou atualizar: [Tutorial DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04-pt) e [documentação oficial](https://docs.docker.com/compose/install/);
+
+2. Suba os containers executando o comando abaixo. Dois containers serão inicializados: `blogs_api` (node) e `blogs_api_db` (mysql).
+
+```
+docker-compose up -d --build
+```
+
+3. Acesse a CLI do container `blogs_api` com o comando abaixo ou abra-o no VS Code. Para a última opção, recomendo a extensão da Microsoft [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
+
+```
+docker exec -it blogs_api bash
+```
+
+4. Dentro do container `blogs_api`, instale as dependências do projeto.
+
+```
+npm install
+```
+
+</details>
+
 <br/>
 
 ## Endpoints
 
-Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto.
+Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto. Para realizar as requisições HTTP e consultar o comportamento de cada endpoint, você pode utilizar a extensão [Thunder Client](https://www.thunderclient.com/).
+
+> ⚠️ Atente-se ao token gerado durante o login, ele será necessário para todas as operações. Lembre-se também que seu tempo de expiração é de 1h.
 
 <details>
   <summary><strong>Login</strong></summary>
 
 ### POST /login
 
-- Realiza o login do usuário.
-- Um token é retornado caso a operação seja bem-sucedida. Esse token deve ser inserido no Header `Authorization` para autenticar outras operações.
+- Valida o login do usuário e retorna um token gerado com jsonwebtoken (jwt).
+- O token gerado deve ser inserido no Header `Authorization` para autenticar outras operações. Lembre-se de guardá-lo e tenha em mente que seu tempo de expiração é de 1h.
+- URL: `http://localhost:PORT/login`
 - O corpo da requisição deve seguir o formato abaixo:
 
 ```
@@ -109,16 +146,17 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto.
 ### GET /user
 
 - Retorna todos os users cadastrados no banco de dados.
-- O token é validado neste endpoint.
+- URL: `http://localhost:PORT/user`
 
 ### GET /user/:id
 
 - Retorna o user cujo id foi passado no endpoint.
-- O token é validado neste endpoint.
+- Exemplo de URL: `http://localhost:PORT/user/1`
 
 ### POST /user
 
 - Adiciona um novo user ao banco de dados.
+- URL: `http://localhost:PORT/user`
 - O corpo da requisição deve seguir o formato abaixo:
 
 ```
@@ -135,7 +173,7 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto.
 ### DELETE /user/me
 
 - Deleta o user que está logado, baseado no id que esta dentro do token.
-- O token é validado neste endpoint.
+- URL: `http://localhost:PORT/user/me`
 
 ---
 
@@ -147,12 +185,12 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto.
 ### GET /categories
 
 - Retorna todas as categorias cadastradas no banco de dados.
-- O token é validado neste endpoint.
+- URL: `http://localhost:PORT/categories`
 
 ### POST /categories
 
 - Adiciona uma nova categoria ao banco de dados.
-- O token é validado neste endpoint.
+- URL: `http://localhost:PORT/categories`
 - O corpo da requisição deve seguir o formato abaixo:
 
 ```
@@ -171,23 +209,22 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto.
 ### GET /post
 
 - Retorna todos os blog posts registrados no banco de dados.
-- O token é validado neste endpoint.
+- URL: `http://localhost:PORT/post`
 
 ### GET /post/:id
 
 - Retorna o blog post cujo id foi passado no endpoint.
-- O token é validado neste endpoint.
+- Exemplo de URL: `http://localhost:PORT/post/1`
 
 ### GET /post/search
 
-- Retorna todos os blog posts cujos títulos possuem o valor de `search`.
-- O token é validado neste endpoint.
-- Exemplo: http://localhost:PORT/post/search?q=vamos
+- Retorna todos os blog posts cujos title ou content possuam o termo pesquisado na query.
+- Exemplo de URL: `http://localhost:PORT/post/search?q=vamos`
 
 ### POST /post
 
 - Adiciona um novo blog post ao banco de dados.
-- O token é validado neste endpoint.
+- URL: `http://localhost:PORT/post`
 - O corpo da requisição deve seguir o formato abaixo:
 
 ```
@@ -201,7 +238,7 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto.
 ### PUT /post/:id
 
 - Atualiza o blog post cujo id foi passado no endpoint.
-- O token é validado neste endpoint.
+- Exemplo de URL: `http://localhost:PORT/post/1`
 - O corpo da requisição deve seguir o formato abaixo:
 
 ```
@@ -214,7 +251,7 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto.
 ### DELETE /post/:id
 
 - Deleta o blog post cujo id foi passado no endpoint.
-- O token é validado neste endpoint.
+- Exemplo de URL: `http://localhost:PORT/post/1`
 
 ---
 
