@@ -81,22 +81,144 @@ npm install
 
 ## Endpoints
 
-<!-- Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto.
+Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto.
 
 <details>
   <summary><strong>Login</strong></summary>
 
 ### POST /login
 
-- Valida o login do usuário e retorna um token gerado com jsonwebtoken (jwt).
+- Realiza o login do usuário.
+- Um token é retornado caso a operação seja bem-sucedida. Esse token deve ser inserido no Header `Authorization` para autenticar outras operações.
+- O corpo da requisição deve seguir o formato abaixo:
 
-### GET /login/validate
-
-- Valida o login do usuário e retorna o `role` (admin ou user) do usuário.
+```
+{
+  "email": "lewishamilton@gmail.com",
+  "password": "123456"
+}
+```
 
 ---
 
-</details> -->
+</details>
+
+<details>
+  <summary><strong>User</strong></summary>
+
+### GET /user
+
+- Retorna todos os users cadastrados no banco de dados.
+- O token é validado neste endpoint.
+
+### GET /user/:id
+
+- Retorna o user cujo id foi passado no endpoint.
+- O token é validado neste endpoint.
+
+### POST /user
+
+- Adiciona um novo user ao banco de dados.
+- O corpo da requisição deve seguir o formato abaixo:
+
+```
+{
+  "displayName": "Brett Wiltshire",
+  "email": "brett@email.com",
+  "password": "123456",
+  "image": "http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png"
+
+  // a image não é obrigatória
+}
+```
+
+### DELETE /user/me
+
+- Deleta o user que está logado, baseado no id que esta dentro do token.
+- O token é validado neste endpoint.
+
+---
+
+</details>
+
+<details>
+  <summary><strong>Categories</strong></summary>
+
+### GET /categories
+
+- Retorna todas as categorias cadastradas no banco de dados.
+- O token é validado neste endpoint.
+
+### POST /categories
+
+- Adiciona uma nova categoria ao banco de dados.
+- O token é validado neste endpoint.
+- O corpo da requisição deve seguir o formato abaixo:
+
+```
+{
+  "name": "Typescript"
+}
+```
+
+---
+
+</details>
+
+<details>
+  <summary><strong>Post</strong></summary>
+
+### GET /post
+
+- Retorna todos os blog posts registrados no banco de dados.
+- O token é validado neste endpoint.
+
+### GET /post/:id
+
+- Retorna o blog post cujo id foi passado no endpoint.
+- O token é validado neste endpoint.
+
+### GET /post/search
+
+- Retorna todos os blog posts cujos títulos possuem o valor de `search`.
+- O token é validado neste endpoint.
+- Exemplo: http://localhost:PORT/post/search?q=vamos
+
+### POST /post
+
+- Adiciona um novo blog post ao banco de dados.
+- O token é validado neste endpoint.
+- O corpo da requisição deve seguir o formato abaixo:
+
+```
+{
+  "title": "Latest updates, August 1st",
+  "content": "The whole text for the blog post goes here in this key",
+  "categoryIds": [1, 2]
+}
+```
+
+### PUT /post/:id
+
+- Atualiza o blog post cujo id foi passado no endpoint.
+- O token é validado neste endpoint.
+- O corpo da requisição deve seguir o formato abaixo:
+
+```
+{
+  "title": "Latest updates, August 1st",
+  "content": "The whole text for the blog post goes here in this key"
+}
+```
+
+### DELETE /post/:id
+
+- Deleta o blog post cujo id foi passado no endpoint.
+- O token é validado neste endpoint.
+
+---
+
+</details>
 
 <br/>
 
