@@ -4,7 +4,7 @@
 
 > [🇧🇷 Clique aqui para acessar a versão em português.](README_pt-br.md)
 
-## Table of Contents
+## Summary
 
 <ol>
   <li><a href="#description">Description</a></li>
