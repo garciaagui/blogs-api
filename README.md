@@ -16,7 +16,7 @@
   <li><a href="#contact">Contact</a></li>
 </ol>
 
-## Overview
+## Description
 
 **22nd project** of the [Trybe][trybe-site-url] Web Development course.
 
