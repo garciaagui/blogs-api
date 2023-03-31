@@ -1,73 +1,73 @@
 <a name="readme-top"></a>
 
-<h1 align="center">Projeto Blogs API 📑</h1>
+<h1 align="center">Blogs API 📑</h1>
+
+> [🇧🇷 Clique aqui para acessar a versão em português.](README_pt-br.md)
+
+## Table of Contents
+
+<ol>
+  <li><a href="#description">Description</a></li>
+  <li><a href="#technologies">Technologies</a></li>
+  <li><a href="#features">Features</a></li>
+  <li><a href="#how-to-run">How to Run</a></li>
+  <li><a href="#endpoints">Endpoints</a></li>
+  <li><a href="#about-trybe">About Trybe</a></li>
+  <li><a href="#contact">Contact</a></li>
+</ol>
+
+## Overview
+
+**22nd project** of the [Trybe][trybe-site-url] Web Development course.
+
+The application consists of an API and a database designed specifically for content management in blogs. Developed in Node.js, it uses Sequelize to model data efficiently. It follows the MSC (Model-Service-Controller) architecture and REST standard principles.
+
+To ensure the security of information, all CRUD (create, read, update, and delete) operations are preceded by JWT token authentication. This means that the user needs to provide correct credentials to perform an operation, thus maintaining the integrity of the data.
 
 <details>
-  <summary>Sumário</summary><br />
-  <ol>
-    <li><a href="#sobre-o-projeto">Sobre o Projeto</a></li>
-    <li><a href="#tecnologias">Tecnologias</a></li>
-    <li><a href="#funcionalidades">Funcionalidades</a></li>
-    <li><a href="#como-executar-o-projeto">Como Executar o Projeto</a></li>
-    <li><a href="#endpoints">Endpoints</a></li>
-    <li><a href="#habilidades">Habilidades</a></li>
-    <li><a href="#sobre-a-trybe">Sobre a Trybe</a></li>
-    <li><a href="#contato">Contato</a></li>
-  </ol>
-</details>
+  <summary><strong>🎲 Here you can go deeper into the database structure.</strong></summary>
 
-## Sobre o Projeto
-
-Projeto **22** do curso de Desenvolvimento Web da [Trybe][trybe-site-url].
-
-Aplicação consiste em uma API e um banco de dados projetados especificamente para o gerenciamento de conteúdo em blogs. Desenvolvida em Node.js, ela utiliza o Sequelize para modelar os dados de maneira eficiente. Segue a arquitetura MSC (Model-Service-Controller) e os princípios do padrão REST.
-
-Para garantir a segurança das informações, todas as operações CRUD (criação, leitura, atualização e remoção) são precedidas pela autenticação do token JWT. Isso significa que o usuário precisa fornecer as credenciais corretas para executar uma operação, mantendo assim a integridade dos dados.
-
-<details>
-  <summary><strong>🎲 Aqui você pode se aprofundar na estrutura da base de dados.</strong></summary>
-
-#### Diagrama de Entidade-Relacionamento
+#### Entity-Relationship Diagram
 
 ![DER](./public/der.png)
 
-> ℹ️ Imagem criada e disponibilizada pela Trybe.
+> ℹ️ Image created and provided by Trybe.
 
 ---
 
-#### Formato das entidades
+#### Entities format
 
-Os dados abaixo são fictícios e utilizados apenas para exemplificar a estrutura das tabelas do banco de dados.
+The data below are fictitious and used only to exemplify the structure of the database tables.
 
-- Uma tabela chamada **users**, com a seguinte estrutura:
+- A table called `users`, with the following structure:
 
-  | id  | display_name    | email                                | password | image                                                                                                      |
-  | --- | --------------- | ------------------------------------ | -------- | ---------------------------------------------------------------------------------------------------------- |
-  | 1   | Brett Wiltshire | brett@email.com // Tem que ser único | 123456   | http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png // Não obrigatório |
+  | id  | display_name    | email                             | password | image                                                                                               |
+  | --- | --------------- | --------------------------------- | -------- | --------------------------------------------------------------------------------------------------- |
+  | 1   | Brett Wiltshire | brett@email.com // Must be unique | 123456   | http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png // Optional |
 
-- Uma tabela chamada **categories**, com a seguinte estrutura:
+- A table called `categories`, with the following structure:
 
   | id  | name |
   | --- | ---- |
   | 18  | News |
 
-- Uma tabela chamada **blog_posts**, com a seguinte estrutura:
+- A table called `blog_posts`, with the following structure:
 
-  | id  | title                      | content                                                | user_id                                                | published                | updated                  |
-  | --- | -------------------------- | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------ | ------------------------ |
-  | 21  | Latest updates, August 1st | The whole text for the blog post goes here in this key | 14 // Chave estrangeira, referenciando o id de `users` | 2011-08-01T19:58:00.000Z | 2011-08-01T19:58:51.947Z |
+  | id  | title                      | content                                                | user_id                                          | published                | updated                  |
+  | --- | -------------------------- | ------------------------------------------------------ | ------------------------------------------------ | ------------------------ | ------------------------ |
+  | 21  | Latest updates, August 1st | The whole text for the blog post goes here in this key | 14 // Foreign key, referencing the id of `users` | 2011-08-01T19:58:00.000Z | 2011-08-01T19:58:51.947Z |
 
-- Uma tabela chamada **posts_categories**. Contém uma **chave primária composta** utilizando os dois atributos da estrutura:
+- A table called `posts_categories`. Contains a **composite primary key** using the two attributes of the structure:
 
-  | post_id                                                               | category_id                                                            |
-  | --------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-  | 50 // Chave primária e estrangeira, referenciando o id de `BlogPosts` | 20 // Chave primária e estrangeira, referenciando o id de `Categories` |
+  | post_id                                                               | category_id                                                           |
+  | --------------------------------------------------------------------- | --------------------------------------------------------------------- |
+  | 50 // Primary key and foreign key, referencing the id of `blog_posts` | 20 // Primary key and foreign key, referencing the id of `categories` |
 
   </details>
 
 <br/>
 
-## Tecnologias
+## Technologies
 
 - [Docker][docker-url]
 - [dotenv][dotenv-url]
@@ -83,66 +83,65 @@ Os dados abaixo são fictícios e utilizados apenas para exemplificar a estrutur
 
 <br/>
 
-## Funcionalidades
+## Features
 
 <ul>
-  <li>Login de usuários.</li>
-  <li>Geração e autenticação de token JWT.</li>
-  <li>Criar, listar e deletar usuários.</li>
-  <li>Criar e listar categorias.</li>
-  <li>Criar, listar, atualizar e deletar posts.</li>
+  <li>User login.</li>
+  <li>JWT token generation and authentication.</li>
+  <li>Create, list, and delete users.</li>
+  <li>Create and list categories.</li>
+  <li>Create, list, update, and delete posts.</li>
 </ul>
 
 <br/>
 
-## Como Executar o Projeto
+## How to Run
 
-Para rodar o projeto, siga os passos abaixo.
+To run the project, follow the steps below.
 
-1. Clone o repositório;
-
-```
-git@github.com:garciaagui/trybe-project-22_blogs-api.git
-```
-
-2. Navegue até a raiz do projeto;
+1. Clone the repository;
 
 ```
-cd trybe-project-22_blogs-api/
+git clone git@github.com:garciaagui/blogs-api.git
 ```
 
-> 🔘 Agora, decida se o projeto será rodado localmente ou via Docker.
+2. Navigate to the project root;
+
+```
+cd blogs-api/
+```
+
+> ⚠️ Now, decide whether the project will be run locally or via Docker.
 
 <details>
-  <summary><strong>💽 Localmente</strong></summary>
+  <summary><strong>💽 Locally</strong></summary>
 
-1. Certifique-se que você tenha o **node** instalado na versão 16 ou superior. Confira [aqui](https://nodejs.org/pt-br/download/package-manager/) a documentação oficial.
+1. Make sure you have **Node.js** installed in version 16 or higher. Check out the [official documentation](https://nodejs.org/en/download/package-manager) for more information.
 
-2. Na raiz do projeto, instale as dependências do projeto.
+2. In the project root, install the project dependencies.
 
 ```
 npm install
 ```
 
-3. Configure as variáveis de ambiente:
+3. Configure the environment variables:
 
-- Renomeie o arquivo `.env.example` (disponível na raíz do projeto) para `.env`;
-- Configure as variáveis `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD` para o seu contexto local.
+- Rename the `.env.example` file (available in the project root) to `.env`;
+- Set the `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD` variables for your local environment.
 
-4. Crie e popule o banco de dados com o comando abaixo.
+4. Create and populate the database with the command below.
 
 ```
 npm run prestart
 ```
-> ℹ️ Arquivos de `seeders` criados e disponibilizados pela Trybe.
 
-5. Para iniciar o servidor, utilize um dos comandos abaixo.
+5. To start the server, use one of the commands below.
 
 ```
-// Comando 1 - Precisa rodá-lo novamente em caso de alteração no código
+// Command 1 - Needs to be run again in case of code changes
 npm run start
 
-// Comando 2 - Reinicia o servidor automaticamente caso haja alguma alteração no código
+// Command 2 - Restarts the server automatically if there is any code change
 npm run nodemon
 ```
 
@@ -150,51 +149,49 @@ npm run nodemon
 
 <details>
   <summary><strong>🐋 Docker</strong></summary>
-  
-1. Certifique-se que você tenha o **docker-compose** instalado na versão 1.29 ou superior. Links oportunos caso você precise instalar ou atualizar: [Tutorial DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04-pt) e [documentação oficial](https://docs.docker.com/compose/install/);
 
-2. Suba os containers executando o comando abaixo. Dois containers serão inicializados: `blogs_api` (node) e `blogs_api_db` (mysql).
+1. Make sure you have **docker-compose** installed in version 1.29 or higher. Useful links if you need to install or update: [DigitalOcean Tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04) and [official documentation](https://docs.docker.com/compose/install/);
+
+2. Bring up the containers by running the command below. Two containers will be initialized: `blogs_api` (node) and `blogs_api_db` (mysql).
 
 ```
 docker-compose up -d --build
 ```
 
-3. Acesse a CLI do container `blogs_api` com o comando abaixo ou abra-o no VS Code. Para a última opção, recomendo a extensão da Microsoft [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
+3. Access the CLI of the `blogs_api` container with the command below or open it in VS Code. For the latter option, I recommend the Microsoft extension [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
 
 ```
 docker exec -it blogs_api bash
 ```
 
-> ⚠️ A partir de agora, **TODOS** os comandos (scripts) disponíveis no `package.json` (incluindo o npm install) devem ser executados **DENTRO** do container `blogs_api`.
+> ⚠️ From now on, **ALL** commands (scripts) available in `package.json` (including npm install) must be executed **INSIDE** the `blogs_api` container.
 
-4. Instale as dependências do projeto.
+4. Install the project dependencies.
 
 ```
 npm install
 ```
 
-5. Crie e popule o banco de dados com o comando abaixo.
+5. Create and populate the database with the command below.
 
 ```
 npm run prestart
 ```
 
-> ℹ️ Arquivos de `seeders` criados e disponibilizados pela Trybe.
-
-6. Para iniciar o servidor, utilize um dos comandos abaixo.
+6. To start the server, use one of the commands below.
 
 ```
-// Comando 1 - Precisa rodá-lo novamente em caso de alteração no código
+// Command 1 - Needs to be run again in case of code changes
 npm start
 
-// Comando 2 - Reinicia o servidor automaticamente caso haja alguma alteração no código
+// Command 2 - Restarts the server automatically if there are any code changes
 npm run nodemon
 ```
 
-- Para o contexto de teste local, siga os passos abaixo.
+- For the local test context, follow the steps below.
 
-1. Renomeie o arquivo `.env.example` (disponível na raíz do projeto) para `.env`;
-2. Configure as variáveis `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD` para o seu contexto local.
+1. Rename the `.env.example` file (available at the root of the project) to `.env`;
+2. Configure the `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD` variables for your local context.
 
 </details>
 
@@ -202,19 +199,19 @@ npm run nodemon
 
 ## Endpoints
 
-Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto. Para realizar as requisições HTTP e consultar o comportamento de cada endpoint, você pode utilizar a extensão [Thunder Client](https://www.thunderclient.com/).
+Below you can find a breakdown of the endpoints used in the project. To make HTTP requests and check the behavior of each endpoint, you can use the [Thunder Client](https://www.thunderclient.com/) extension.
 
-> ⚠️ Atente-se ao token gerado durante o login, ele será necessário para todas as operações. Lembre-se também que seu tempo de expiração é de 1h.
+> ⚠️ Pay attention to the token generated during login, it will be necessary for all operations. Remember that its expiration time is 1 hour.
 
 <details>
   <summary><strong>Login</strong></summary>
 
 ### POST /login
 
-- Valida o login do usuário e retorna um token gerado com jsonwebtoken (jwt).
-- O token gerado deve ser inserido no Header `Authorization` para autenticar outras operações. Lembre-se de guardá-lo e tenha em mente que seu tempo de expiração é de 1h.
+- Validates the user's login and returns a token generated with jsonwebtoken (JWT).
+- The generated token must be inserted in the `Authorization` header to authenticate other operations. Remember to save it and keep in mind that **its expiration time is 1 hour**.
 - URL: `http://localhost:PORT/login`
-- O corpo da requisição deve seguir o formato abaixo:
+- The request body must follow the format below:
 
 ```
 {
@@ -232,19 +229,19 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto. 
 
 ### GET /user
 
-- Retorna todos os users cadastrados no banco de dados.
+- Returns all the users registered in the database.
 - URL: `http://localhost:PORT/user`
 
 ### GET /user/:id
 
-- Retorna o user cujo id foi passado no endpoint.
-- Exemplo de URL: `http://localhost:PORT/user/1`
+- Returns the user whose id was passed in the endpoint.
+- Example URL: `http://localhost:PORT/user/1`
 
 ### POST /user
 
-- Adiciona um novo user ao banco de dados.
+- Adds a new user to the database.
 - URL: `http://localhost:PORT/user`
-- O corpo da requisição deve seguir o formato abaixo:
+- The request body must follow the format below:
 
 ```
 {
@@ -253,13 +250,13 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto. 
   "password": "123456",
   "image": "http://4.bp.blogspot.com/_YA50adQ-7vQ/S1gfR_6ufpI/AAAAAAAAAAk/1ErJGgRWZDg/S45/brett.png"
 
-  // a image não é obrigatória
+  // image is optional
 }
 ```
 
 ### DELETE /user/me
 
-- Deleta o user que está logado, baseado no id que esta dentro do token.
+- Deletes the logged-in user based on the id inside the token.
 - URL: `http://localhost:PORT/user/me`
 
 ---
@@ -271,14 +268,14 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto. 
 
 ### GET /categories
 
-- Retorna todas as categorias cadastradas no banco de dados.
+- Returns all the categories registered in the database.
 - URL: `http://localhost:PORT/categories`
 
 ### POST /categories
 
-- Adiciona uma nova categoria ao banco de dados.
+- Adds a new category to the database.
 - URL: `http://localhost:PORT/categories`
-- O corpo da requisição deve seguir o formato abaixo:
+- The request body must follow the format below:
 
 ```
 {
@@ -295,24 +292,24 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto. 
 
 ### GET /post
 
-- Retorna todos os blog posts registrados no banco de dados.
+- Returns all the blog posts registered in the database.
 - URL: `http://localhost:PORT/post`
 
 ### GET /post/:id
 
-- Retorna o blog post cujo id foi passado no endpoint.
-- Exemplo de URL: `http://localhost:PORT/post/1`
+- Returns the blog post whose id was passed in the endpoint.
+- Example URL: `http://localhost:PORT/post/1`
 
 ### GET /post/search
 
-- Retorna todos os blog posts cujos title ou content possuam o termo pesquisado na query.
-- Exemplo de URL: `http://localhost:PORT/post/search?q=vamos`
+- Returns all the blog posts whose `title` or `content` contains the searched term in the query.
+- Example URL: `http://localhost:PORT/post/search?q=vamos`
 
 ### POST /post
 
-- Adiciona um novo blog post ao banco de dados.
+- Adds a new blog post to the database.
 - URL: `http://localhost:PORT/post`
-- O corpo da requisição deve seguir o formato abaixo:
+- The request body must follow the format below:
 
 ```
 {
@@ -324,9 +321,9 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto. 
 
 ### PUT /post/:id
 
-- Atualiza o blog post cujo id foi passado no endpoint.
-- Exemplo de URL: `http://localhost:PORT/post/1`
-- O corpo da requisição deve seguir o formato abaixo:
+- Updates the blog post whose id was passed in the endpoint.
+- Example URL: `http://localhost:PORT/post/1`
+- The request body must follow the format below:
 
 ```
 {
@@ -337,8 +334,8 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto. 
 
 ### DELETE /post/:id
 
-- Deleta o blog post cujo id foi passado no endpoint.
-- Exemplo de URL: `http://localhost:PORT/post/1`
+- Deletes the blog post whose id was passed in the endpoint.
+- Example URL: `http://localhost:PORT/post/1`
 
 ---
 
@@ -346,39 +343,28 @@ Abaixo você pode conferir um detalhamento dos endpoints utilizados no projeto. 
 
 <br/>
 
-## Habilidades
+## About Trybe
 
-<ul>
-  <li>Aplicação da arquitetura de software MSC (Model-Service-Controller).</li>
-  <li>Modelagem de dados com o ORM Sequelize.</li>
-  <li>Aplicação dos princípios de arquitetura REST.</li>
-  <li>Criação de CRUD.</li>
-  <li>Utilização do jsonwebtoken (JWT) para geração de token e autenticação de usuários.</li>
-  <li>Utilização do JOI para validação.</li>
-</ul>
+_"[Trybe][trybe-site-url] is a future school for anyone who wants to improve their lives and build a successful career in technology, where the person only pays when they get a good job."_
+
+_"The program features over 1,500 hours of online classes covering introduction to software development, front-end, back-end, computer science, software engineering, agile methodologies, and behavioral skills."_
 
 <br/>
 
-## Sobre a Trybe
+## Contact
 
-_"A [Trybe][trybe-site-url] é uma escola do futuro para qualquer pessoa que queira melhorar de vida e construir uma carreira de sucesso em tecnologia, onde a pessoa só paga quando conseguir um bom trabalho."_
-
-_"O programa conta com mais de 1.500 horas de aulas presenciais e online, aborda introdução ao desenvolvimento de software, front-end, back-end, ciência da computação, engenharia de software, metodologias ágeis e habilidades comportamentais._"
-
-<br/>
-
-## Contato
-
-Projeto desenvolvido por Guilherme Garcia. Seguem abaixo minhas redes sociais e meios de contato. 🤘
+Project developed by **Guilherme Garcia**. Below are my social networks and means of contact. 🤘
 
 [![Gmail][gmail-badge]][gmail-url]
 [![Linkedin][linkedin-badge]][linkedin-url]
 [![GitHub][github-badge]][github-url]
 [![Instagram][instagram-badge]][instagram-url]
 
-<p align="right"><a href="#readme-top">Voltar ao topo</a></p>
+<p align="right"><a href="#readme-top">Back to top</a></p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
+
+<!-- Useful URLs -->
 
 [trybe-site-url]: https://www.betrybe.com/
 
